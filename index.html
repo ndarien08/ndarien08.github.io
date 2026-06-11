@@ -21,6 +21,7 @@
       --nav-bg: rgba(13,13,13,0.85);
       --mono: 'IBM Plex Mono', monospace;
       --sans: 'Inter', sans-serif;
+      --logo-filter: invert(1) brightness(1.2);
     }
 
     :root.light {
@@ -34,6 +35,7 @@
       --accent-dim: rgba(0,119,204,0.08);
       --accent-glow: rgba(0,119,204,0.04);
       --nav-bg: rgba(245,245,243,0.88);
+      --logo-filter: none;
     }
 
     html { scroll-behavior: smooth; }
@@ -412,7 +414,10 @@
     <div class="exp-item">
       <div class="exp-entry">
         <div>
-          <div class="exp-title">Research Assistant — Isokeraunic Map Project</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.3rem;">
+            <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85; filter:var(--logo-filter);">
+            <div class="exp-title" style="margin-bottom:0;">Research Assistant — Isokeraunic Map Project</div>
+          </div>
           <div class="exp-org">Universidad APEC</div>
           <div class="exp-desc">
             Supported the electronics development cycle for the Dominican Republic Isokeraunic Map research project.
@@ -424,7 +429,10 @@
       </div>
       <div class="exp-entry">
         <div>
-          <div class="exp-title">Co-Researcher — CubeSat Testing Laboratory</div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.3rem;">
+            <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85; filter:var(--logo-filter);">
+            <div class="exp-title" style="margin-bottom:0;">Co-Researcher — CubeSat Testing Laboratory</div>
+          </div>
           <div class="exp-org">Universidad APEC</div>
           <div class="exp-desc">
             Contributed to the development of a CubeSat testing laboratory to validate satellite systems prior to launch.
