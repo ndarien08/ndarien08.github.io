@@ -189,43 +189,76 @@
     }
 
     /* PROJECTS */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 0.5px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-    }
-    .project-card {
-      background: var(--surface);
-      padding: 1.75rem;
-      position: relative;
+    .projects-list { display: flex; flex-direction: column; gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .project-item { background: var(--surface); }
+    .project-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 1.75rem;
+      cursor: pointer;
       transition: background 0.2s;
-      cursor: default;
+      position: relative;
+      user-select: none;
     }
-    .project-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
+    .project-header::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left;
       transition: transform 0.3s ease;
     }
-    .project-card:hover { background: var(--accent-glow); }
-    .project-card:hover::before { transform: scaleX(1); }
-    .project-num {
-      font-family: var(--mono);
-      font-size: 11px; color: var(--border-hover);
-      margin-bottom: 1rem;
+    .project-header:hover { background: var(--accent-glow); }
+    .project-header:hover::before { transform: scaleX(1); }
+    .project-item.open .project-header { background: var(--accent-glow); }
+    .project-item.open .project-header::before { transform: scaleX(1); }
+    .project-header-left { display: flex; align-items: center; gap: 1rem; }
+    .project-num { font-family: var(--mono); font-size: 11px; color: var(--muted); min-width: 20px; }
+    .project-title { font-size: 0.95rem; font-weight: 400; line-height: 1.4; }
+    .project-chevron {
+      font-family: var(--mono); font-size: 14px; color: var(--muted);
+      transition: transform 0.3s ease;
     }
-    .project-title {
-      font-size: 0.95rem; font-weight: 400;
-      margin-bottom: 0.8rem; line-height: 1.4;
+    .project-item.open .project-chevron { transform: rotate(180deg); color: var(--accent); }
+
+    /* EXPANDED PANEL */
+    .project-panel {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.45s ease;
+      border-top: 0px solid var(--border);
     }
-    .project-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .project-item.open .project-panel {
+      max-height: 1200px;
+      border-top: 0.5px solid var(--border);
+    }
+    .project-panel-inner { padding: 1.75rem; display: flex; flex-direction: column; gap: 2rem; }
+
+    .project-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; max-width: 640px; }
+
+    /* IMAGE GALLERY */
+    .gallery-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+    .gallery-grid img {
+      width: 100%; aspect-ratio: 4/3; object-fit: cover;
+      border-radius: 3px; border: 0.5px solid var(--border);
+      cursor: pointer; transition: opacity 0.2s, border-color 0.2s;
+    }
+    .gallery-grid img:hover { opacity: 0.85; border-color: var(--accent); }
+
+    /* SPECS */
+    .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 3px; overflow: hidden; }
+    .spec-item { background: var(--surface); padding: 0.9rem 1rem; }
+    .spec-key { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .spec-val { font-size: 13px; color: var(--text); }
+
+    /* DESIGN FILES */
+    .files-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    .file-link {
+      font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+      color: var(--muted); text-decoration: none;
+      border: 0.5px solid var(--border); border-radius: 2px;
+      padding: 0.4rem 0.9rem;
+      transition: all 0.15s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .file-link:hover { color: var(--accent); border-color: var(--accent); }
+    .file-link.placeholder { opacity: 0.4; cursor: default; pointer-events: none; }
 
     /* CONTACT */
     .contact-grid {
@@ -446,33 +479,163 @@
 
   <section id="projects" class="reveal">
     <div class="section-label">Projects</div>
-    <div class="projects-grid">
-      <div class="project-card">
-        <div class="project-num">01</div>
-        <div class="project-title">STM32F7 Screen Controller Board</div>
-        <div class="project-desc">
-          Custom PCB around the STM32F7 for an 8080 parallel display controller.
-          Includes an ESP32-C6 coprocessor for Wi-Fi and remote control.
-          Central hub of a smart home ecosystem.
+    <div class="projects-list">
+
+      <!-- PROJECT 01 -->
+      <div class="project-item" id="proj-01">
+        <div class="project-header" onclick="toggleProject('proj-01')">
+          <div class="project-header-left">
+            <span class="project-num">01</span>
+            <span class="project-title">STM32F7 Screen Controller Board</span>
+          </div>
+          <span class="project-chevron">&#8964;</span>
+        </div>
+        <div class="project-panel">
+          <div class="project-panel-inner">
+            <p class="project-desc">
+              Custom PCB designed around the STM32F7 microcontroller for an 8080 parallel interface display controller.
+              Includes an ESP32-C6 coprocessor providing Wi-Fi connectivity and remote control capabilities.
+              Designed as the central hub of a smart home ecosystem.
+            </p>
+
+            <div>
+              <div class="gallery-label">Board Photos</div>
+              <div class="gallery-grid">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-top.png" alt="STM32F7 board top view">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-bottom.png" alt="STM32F7 board bottom view">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-angled_top.png" alt="STM32F7 board angled top">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-angled_bottom.png" alt="STM32F7 board angled bottom">
+              </div>
+            </div>
+
+            <div>
+              <div class="gallery-label">Specifications</div>
+              <div class="specs-grid">
+                <div class="spec-item"><div class="spec-key">MCU</div><div class="spec-val">STM32F7</div></div>
+                <div class="spec-item"><div class="spec-key">Coprocessor</div><div class="spec-val">ESP32-C6</div></div>
+                <div class="spec-item"><div class="spec-key">Display Interface</div><div class="spec-val">8080 Parallel</div></div>
+                <div class="spec-item"><div class="spec-key">Connectivity</div><div class="spec-val">Wi-Fi (ESP32-C6)</div></div>
+                <div class="spec-item"><div class="spec-key">Layers</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Board Size</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Supply Voltage</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Tool</div><div class="spec-val">KiCad</div></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="gallery-label">Design Files</div>
+              <div class="files-row">
+                <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
+                <a class="file-link placeholder" href="#">&#128196; Fabrication Docs</a>
+                <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="project-card">
-        <div class="project-num">02</div>
-        <div class="project-title">ESP32-C6 Environmental Sensor Node</div>
-        <div class="project-desc">
-          Wireless monitoring node with Wi-Fi and Bluetooth. Collects temperature,
-          humidity, and air quality data, transmitting to the central controller
-          for visualization.
+
+      <!-- PROJECT 02 -->
+      <div class="project-item" id="proj-02">
+        <div class="project-header" onclick="toggleProject('proj-02')">
+          <div class="project-header-left">
+            <span class="project-num">02</span>
+            <span class="project-title">ESP32-C6 Environmental Sensor Node</span>
+          </div>
+          <span class="project-chevron">&#8964;</span>
+        </div>
+        <div class="project-panel">
+          <div class="project-panel-inner">
+            <p class="project-desc">
+              Wireless environmental monitoring node based on the ESP32-C6 with Wi-Fi and Bluetooth connectivity.
+              Functions as a slave device within a smart home system, collecting temperature, humidity, and air quality
+              data before transmitting to the central controller for processing and visualization.
+            </p>
+
+            <div>
+              <div class="gallery-label">Board Photos</div>
+              <div class="gallery-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+                <div style="aspect-ratio:4/3; background:var(--border); border-radius:3px; border:0.5px solid var(--border); display:flex; align-items:center; justify-content:center;">
+                  <span style="font-family:var(--mono); font-size:11px; color:var(--muted);">— coming soon —</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="gallery-label">Specifications</div>
+              <div class="specs-grid">
+                <div class="spec-item"><div class="spec-key">MCU</div><div class="spec-val">ESP32-C6</div></div>
+                <div class="spec-item"><div class="spec-key">Connectivity</div><div class="spec-val">Wi-Fi + BT</div></div>
+                <div class="spec-item"><div class="spec-key">Sensors</div><div class="spec-val">Temp / Humidity / AQ</div></div>
+                <div class="spec-item"><div class="spec-key">Role</div><div class="spec-val">Slave Node</div></div>
+                <div class="spec-item"><div class="spec-key">Layers</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Board Size</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Supply Voltage</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Tool</div><div class="spec-val">KiCad</div></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="gallery-label">Design Files</div>
+              <div class="files-row">
+                <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
+                <a class="file-link placeholder" href="#">&#128196; Fabrication Docs</a>
+                <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="project-card">
-        <div class="project-num">03</div>
-        <div class="project-title">STM32WB65 Development Board</div>
-        <div class="project-desc">
-          Development platform featuring the STM32WB65 wireless microcontroller
-          for BLE applications and IoT development.
+
+      <!-- PROJECT 03 -->
+      <div class="project-item" id="proj-03">
+        <div class="project-header" onclick="toggleProject('proj-03')">
+          <div class="project-header-left">
+            <span class="project-num">03</span>
+            <span class="project-title">STM32WB65 Development Board</span>
+          </div>
+          <span class="project-chevron">&#8964;</span>
+        </div>
+        <div class="project-panel">
+          <div class="project-panel-inner">
+            <p class="project-desc">
+              Development platform featuring the STM32WB65 wireless microcontroller for embedded systems,
+              Bluetooth Low Energy applications, and IoT development.
+            </p>
+
+            <div>
+              <div class="gallery-label">Board Photos</div>
+              <div class="gallery-grid">
+                <div style="aspect-ratio:4/3; background:var(--border); border-radius:3px; border:0.5px solid var(--border); display:flex; align-items:center; justify-content:center;">
+                  <span style="font-family:var(--mono); font-size:11px; color:var(--muted);">— coming soon —</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="gallery-label">Specifications</div>
+              <div class="specs-grid">
+                <div class="spec-item"><div class="spec-key">MCU</div><div class="spec-val">STM32WB65</div></div>
+                <div class="spec-item"><div class="spec-key">Connectivity</div><div class="spec-val">BLE</div></div>
+                <div class="spec-item"><div class="spec-key">Use Case</div><div class="spec-val">IoT / BLE Dev</div></div>
+                <div class="spec-item"><div class="spec-key">Layers</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Board Size</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Supply Voltage</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Tool</div><div class="spec-val">KiCad</div></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="gallery-label">Design Files</div>
+              <div class="files-row">
+                <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
+                <a class="file-link placeholder" href="#">&#128196; Fabrication Docs</a>
+                <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -480,9 +643,9 @@
     <div class="section-label">Contact</div>
     <div class="contact-grid">
       <div class="contact-item">
-        <a href="mailto:darienrosariopimentel@gmail.com">
+        <a href="mailto:rosariopimenteldarien@gmail.com">
           <div class="contact-label">Email</div>
-          <div class="contact-value">darienrosariopimentel@gmail.com</div>
+          <div class="contact-value">rosariopimenteldarien@gmail.com</div>
         </a>
       </div>
       <div class="contact-item">
@@ -511,6 +674,13 @@
       { threshold: 0.1 }
     );
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    function toggleProject(id) {
+      const item = document.getElementById(id);
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.project-item.open').forEach(el => el.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
 
     const toggle = document.getElementById('themeToggle');
     const icon = document.getElementById('themeIcon');
