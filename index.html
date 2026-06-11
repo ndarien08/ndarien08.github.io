@@ -259,6 +259,8 @@
     }
     .file-link:hover { color: var(--accent); border-color: var(--accent); }
     .file-link.placeholder { opacity: 0.4; cursor: default; pointer-events: none; }
+    .file-link.license-btn { color: var(--accent); border-color: var(--accent); opacity: 0.7; }
+    .file-link.license-btn:hover { opacity: 1; }
 
     /* CONTACT */
     .contact-grid {
@@ -501,10 +503,10 @@
             <div>
               <div class="gallery-label">Board Photos</div>
               <div class="gallery-grid">
-                <img src="images/MCUSTM32BT/MCUSTM32BT-top.png" alt="STM32F7 board top view">
-                <img src="images/MCUSTM32BT/MCUSTM32BT-bottom.png" alt="STM32F7 board bottom view">
-                <img src="images/MCUSTM32BT/MCUSTM32BT-angled_top.png" alt="STM32F7 board angled top">
-                <img src="images/MCUSTM32BT/MCUSTM32BT-angled_bottom.png" alt="STM32F7 board angled bottom">
+                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-top.png" alt="STM32F7 board top view">
+                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-bottom.png" alt="STM32F7 board bottom view">
+                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-angled_top.png" alt="STM32F7 board angled top">
+                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-angled_bottom.png" alt="STM32F7 board angled bottom">
               </div>
             </div>
 
@@ -528,6 +530,7 @@
                 <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
                 <a class="file-link placeholder" href="#">&#128196; Fabrication Docs</a>
                 <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
+                <a class="file-link license-btn" href="#license">&#9679; License</a>
               </div>
             </div>
           </div>
@@ -580,6 +583,7 @@
                 <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
                 <a class="file-link placeholder" href="#">&#128196; Fabrication Docs</a>
                 <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
+                <a class="file-link license-btn" href="#license">&#9679; License</a>
               </div>
             </div>
           </div>
@@ -630,6 +634,7 @@
                 <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
                 <a class="file-link placeholder" href="#">&#128196; Fabrication Docs</a>
                 <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
+                <a class="file-link license-btn" href="#license">&#9679; License</a>
               </div>
             </div>
           </div>
@@ -663,9 +668,25 @@
     </div>
   </section>
 
+  <section id="license" class="reveal">
+    <div class="section-label">License</div>
+    <div style="background:var(--surface); border:0.5px solid var(--border); border-radius:4px; padding:1.75rem; display:flex; flex-direction:column; gap:1rem;">
+      <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem;">
+        <span style="font-family:var(--mono); font-size:12px; color:var(--accent);">Copyright &copy; 2026 Darien R.P. — All Rights Reserved</span>
+        <a href="https://github.com/ndarien08/ndarien08.github.io/blob/main/LICENSE" target="_blank" rel="noopener" class="file-link" style="font-size:11px;">&#128279; View on GitHub</a>
+      </div>
+      <p style="font-size:13px; color:var(--muted); line-height:1.8; border-top:0.5px solid var(--border); padding-top:1rem;">
+        This repository is provided for viewing and evaluation purposes only.
+        No part of this repository, including source code, schematics, PCB layouts, manufacturing files,
+        documentation, images, or other materials, may be copied, modified, distributed, reproduced,
+        manufactured, or used for commercial purposes without prior written permission from the copyright holder.
+      </p>
+    </div>
+  </section>
+
   <footer>
     <span class="footer-mono"><span class="status-dot"></span>Available for opportunities</span>
-    <span class="footer-mono">Last updated — June 2026</span>
+    <span class="footer-mono">&copy; 2026 Darien R.P. &mdash; All Rights Reserved &mdash; Last updated June 2026</span>
   </footer>
 
   <script>
