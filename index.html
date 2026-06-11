@@ -241,6 +241,32 @@
     }
     .gallery-grid img:hover { opacity: 0.85; border-color: var(--accent); }
 
+    /* LIGHTBOX */
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 999;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(10px);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img {
+      max-width: 90vw; max-height: 88vh;
+      object-fit: contain;
+      border-radius: 4px;
+      border: 0.5px solid var(--border);
+      box-shadow: 0 0 60px rgba(0,0,0,0.6);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: fixed; top: 1.25rem; right: 1.5rem;
+      font-family: var(--mono); font-size: 13px;
+      color: var(--muted); cursor: pointer;
+      background: transparent; border: none;
+      letter-spacing: 0.08em; transition: color 0.15s;
+    }
+    .lightbox-close:hover { color: var(--text); }
+
     /* SPECS */
     .specs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1px; background: var(--border); border: 0.5px solid var(--border); border-radius: 3px; overflow: hidden; }
     .spec-item { background: var(--surface); padding: 0.9rem 1rem; }
@@ -531,9 +557,9 @@
                 <div class="spec-item"><div class="spec-key">Coprocessor</div><div class="spec-val">ESP32-C6</div></div>
                 <div class="spec-item"><div class="spec-key">Display Interface</div><div class="spec-val">8080 Parallel</div></div>
                 <div class="spec-item"><div class="spec-key">Connectivity</div><div class="spec-val">Wi-Fi (ESP32-C6)</div></div>
-                <div class="spec-item"><div class="spec-key">Layers</div><div class="spec-val">— placeholder —</div></div>
-                <div class="spec-item"><div class="spec-key">Board Size</div><div class="spec-val">— placeholder —</div></div>
-                <div class="spec-item"><div class="spec-key">Supply Voltage</div><div class="spec-val">— placeholder —</div></div>
+                <div class="spec-item"><div class="spec-key">Layers</div><div class="spec-val">6 Layers</div></div>
+                <div class="spec-item"><div class="spec-key">Board Size</div><div class="spec-val">95.46mm x 81.61mm</div></div>
+                <div class="spec-item"><div class="spec-key">Supply Voltage</div><div class="spec-val">2.5V to 5.5V</div></div>
                 <div class="spec-item"><div class="spec-key">Tool</div><div class="spec-val">KiCad</div></div>
               </div>
             </div>
@@ -685,6 +711,11 @@
     <span class="footer-mono">Last updated — June 2026</span>
   </footer>
 
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">[ close ]</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
   <script>
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
@@ -698,6 +729,24 @@
       document.querySelectorAll('.project-item.open').forEach(el => el.classList.remove('open'));
       if (!isOpen) item.classList.add('open');
     }
+
+    function openLightbox(src, alt) {
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      img.src = src; img.alt = alt;
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    // Wire up all gallery images
+    document.querySelectorAll('.gallery-grid img').forEach(img => {
+      img.addEventListener('click', () => openLightbox(img.src, img.alt));
+    });
 
     const toggle = document.getElementById('themeToggle');
     const icon = document.getElementById('themeIcon');
@@ -714,3 +763,4 @@
 
 </body>
 </html>
+
