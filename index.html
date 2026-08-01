@@ -396,6 +396,7 @@
       footer { padding: 1.5rem 1.25rem; }
     }
   </style>
+  <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
 </head>
 <body>
 
@@ -741,11 +742,31 @@
   </div>
 
   <script>
-    const observer = new IntersectionObserver(
-      entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-      { threshold: 0.1 }
-    );
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    const revealEls = document.querySelectorAll('.reveal');
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+        { threshold: 0.1 }
+      );
+      revealEls.forEach(el => observer.observe(el));
+
+      // Safety net: if a section never fires the observer (direct #hash
+      // navigation racing the observer, extension interference, etc.),
+      // force it visible after a short delay so content never stays
+      // permanently blank.
+      setTimeout(() => revealEls.forEach(el => el.classList.add('visible')), 2500);
+    } else {
+      // No IntersectionObserver support: skip the animation, just show everything.
+      revealEls.forEach(el => el.classList.add('visible'));
+    }
+
+    // If the page loads with a #hash (e.g. shared link to /#contact), make
+    // sure that section is visible immediately instead of waiting on scroll.
+    if (location.hash) {
+      const target = document.querySelector(location.hash);
+      if (target) target.classList.add('visible');
+    }
 
     function toggleProject(id) {
       const item = document.getElementById(id);
