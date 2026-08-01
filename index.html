@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self'; script-src 'self'; base-uri 'self';">
   <title>Darien Rosario Pimentel</title>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
@@ -69,6 +70,7 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--text); }
+    .nav-burger { display: none; }
 
     /* HERO */
     .hero {
@@ -219,12 +221,14 @@
 
     /* EXPANDED PANEL */
     .project-panel {
-      max-height: 0; overflow: hidden;
-      transition: max-height 0.45s ease;
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.45s ease;
       border-top: 0px solid var(--border);
     }
+    .project-panel > .project-panel-inner-wrap { overflow: hidden; min-height: 0; }
     .project-item.open .project-panel {
-      max-height: 1200px;
+      grid-template-rows: 1fr;
       border-top: 0.5px solid var(--border);
     }
     .project-panel-inner { padding: 1.75rem; display: flex; flex-direction: column; gap: 2rem; }
@@ -284,7 +288,11 @@
       display: flex; align-items: center; gap: 6px;
     }
     .file-link:hover { color: var(--accent); border-color: var(--accent); }
-    .file-link.placeholder { opacity: 0.4; cursor: default; pointer-events: none; }
+    .file-link.placeholder {
+      opacity: 0.35; cursor: not-allowed; pointer-events: none;
+      border-style: dashed;
+    }
+    .file-link.placeholder::after { content: ' — coming soon'; font-size: 10px; }
 
     /* CONTACT */
     .contact-grid {
@@ -366,8 +374,21 @@
     .reveal.visible { opacity: 1; transform: none; }
 
     @media (max-width: 600px) {
-      nav { padding: 1rem 1.25rem; }
-      .nav-links { display: none; }
+      nav { padding: 1rem 1.25rem; flex-wrap: wrap; }
+      .nav-links {
+        display: none;
+        position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0;
+        background: var(--nav-bg); backdrop-filter: blur(12px);
+        border-bottom: 0.5px solid var(--border);
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.9rem 1.25rem; border-top: 0.5px solid var(--border); }
+      .nav-burger {
+        display: block; background: transparent; border: none;
+        color: var(--text); font-size: 20px; cursor: pointer;
+        padding: 0.2rem 0.4rem;
+      }
       .hero { padding: 7rem 1.25rem 3rem; }
       section { padding: 3.5rem 1.25rem; }
       .exp-entry { grid-template-columns: 1fr; }
@@ -380,13 +401,14 @@
 
   <nav>
     <div class="nav-logo">drp /</div>
-    <div class="nav-links">
+    <div class="nav-links" id="navLinks">
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
     </div>
+    <button class="nav-burger" id="navBurger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
       <span class="icon" id="themeIcon">☀</span>
       <span id="themeLabel">Day</span>
@@ -403,7 +425,7 @@
     </p>
     <div class="hero-cta">
       <a href="https://github.com/ndarien08" class="btn btn-primary">GitHub</a>
-      <a href="docs/resume/CV%20Darien%20Rosario%20Pimentel%20%5B01-08-2026%5D%20B.pdf" target="_blank" class="btn btn-outline">Resume</a>
+      <a href="docs/resume/CV_Darien_Rosario_Pimentel.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
       <a href="#contact" class="btn btn-outline">Get in touch</a>
     </div>
   </div>
@@ -489,7 +511,7 @@
       <div class="exp-entry">
         <div>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.3rem;">
-            <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85;">
+            <img src="logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85;">
             <div class="exp-title" style="margin-bottom:0;">Research Assistant — Isokeraunic Map Project</div>
           </div>
           <div class="exp-org">Universidad APEC</div>
@@ -504,7 +526,7 @@
       <div class="exp-entry">
         <div>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.3rem;">
-            <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85;">
+            <img src="logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85;">
             <div class="exp-title" style="margin-bottom:0;">Co-Researcher — CubeSat Testing Laboratory</div>
           </div>
           <div class="exp-org">Universidad APEC</div>
@@ -533,6 +555,7 @@
           <span class="project-chevron">&#8964;</span>
         </div>
         <div class="project-panel">
+          <div class="project-panel-inner-wrap">
           <div class="project-panel-inner">
             <p class="project-desc">
               Custom PCB designed around the STM32F7 microcontroller for an 8080 parallel interface display controller.
@@ -543,10 +566,10 @@
             <div>
               <div class="gallery-label">Board Photos</div>
               <div class="gallery-grid">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/STDISP/STDISP-top.png" alt="STM32F7 board top view">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/STDISP/STDISP-bottom.png" alt="STM32F7 board bottom view">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/STDISP/STDISP-angled_top.png" alt="STM32F7 board angled top">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/STDISP/STDISP-angled_bottom.png" alt="STM32F7 board angled bottom">
+                <img src="images/STDISP/STDISP-top.png" alt="STM32F7 board top view">
+                <img src="images/STDISP/STDISP-bottom.png" alt="STM32F7 board bottom view">
+                <img src="images/STDISP/STDISP-angled_top.png" alt="STM32F7 board angled top">
+                <img src="images/STDISP/STDISP-angled_bottom.png" alt="STM32F7 board angled bottom">
               </div>
             </div>
 
@@ -568,10 +591,11 @@
               <div class="gallery-label">Design Files</div>
               <div class="files-row">
                 <a class="file-link placeholder" href="#">&#128196; Schematic (.pdf)</a>
-                <a class="file-link" href="projects/STDISP/STDISP-fabrication.pdf" target="_blank">&#128196; Fabrication Docs</a>
+                <a class="file-link" href="projects/STDISP/STDISP-fabrication.pdf" target="_blank" rel="noopener noreferrer">&#128196; Fabrication Docs</a>
                 <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -586,6 +610,7 @@
           <span class="project-chevron">&#8964;</span>
         </div>
         <div class="project-panel">
+          <div class="project-panel-inner-wrap">
           <div class="project-panel-inner">
             <p class="project-desc">
               Wireless environmental monitoring node based on the ESP32-C6 with Wi-Fi and Bluetooth connectivity.
@@ -596,8 +621,8 @@
             <div>
               <div class="gallery-label">Board Photos</div>
               <div class="gallery-grid">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/EnviroNode/NOBG/ENVIRONODE_ESP32BG.png" alt="EnviroNode ESP32 front view">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/EnviroNode/NOBG/ENVIRONODE_ESP32BBG.png" alt="EnviroNode ESP32 back view">
+                <img src="images/EnviroNode/NOBG/ENVIRONODE_ESP32BG.png" alt="EnviroNode ESP32 front view">
+                <img src="images/EnviroNode/NOBG/ENVIRONODE_ESP32BBG.png" alt="EnviroNode ESP32 back view">
               </div>
             </div>
 
@@ -608,9 +633,6 @@
                 <div class="spec-item"><div class="spec-key">Connectivity</div><div class="spec-val">Wi-Fi + BT</div></div>
                 <div class="spec-item"><div class="spec-key">Sensors</div><div class="spec-val">Temp / Humidity / AQ</div></div>
                 <div class="spec-item"><div class="spec-key">Role</div><div class="spec-val">Slave Node</div></div>
-                <div class="spec-item"><div class="spec-key">Layers</div><div class="spec-val">— placeholder —</div></div>
-                <div class="spec-item"><div class="spec-key">Board Size</div><div class="spec-val">— placeholder —</div></div>
-                <div class="spec-item"><div class="spec-key">Supply Voltage</div><div class="spec-val">— placeholder —</div></div>
                 <div class="spec-item"><div class="spec-key">Tool</div><div class="spec-val">KiCad</div></div>
               </div>
             </div>
@@ -623,6 +645,7 @@
                 <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -637,6 +660,7 @@
           <span class="project-chevron">&#8964;</span>
         </div>
         <div class="project-panel">
+          <div class="project-panel-inner-wrap">
           <div class="project-panel-inner">
             <p class="project-desc">
               Development platform featuring the STM32WB65 wireless microcontroller for embedded systems,
@@ -646,10 +670,10 @@
             <div>
               <div class="gallery-label">Board Photos</div>
               <div class="gallery-grid">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-top.png" alt="STM32WB65 board top view">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-bottom.png" alt="STM32WB65 board bottom view">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-angled_top.png" alt="STM32WB65 board angled top">
-                <img src="https://raw.githubusercontent.com/ndarien08/ndarien08.github.io/main/images/MCUSTM32BT/MCUSTM32BT-angled_bottom.png" alt="STM32WB65 board angled bottom">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-top.png" alt="STM32WB65 board top view">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-bottom.png" alt="STM32WB65 board bottom view">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-angled_top.png" alt="STM32WB65 board angled top">
+                <img src="images/MCUSTM32BT/MCUSTM32BT-angled_bottom.png" alt="STM32WB65 board angled bottom">
               </div>
             </div>
 
@@ -669,11 +693,12 @@
             <div>
               <div class="gallery-label">Design Files</div>
               <div class="files-row">
-                <a class="file-link" href="projects/MCUSTM32BT/MCUSTM32BT-schematic.pdf" target="_blank">&#128196; Schematic (.pdf)</a>
-                <a class="file-link" href="projects/MCUSTM32BT/MCUSTM32BT-fabrication.pdf" target="_blank">&#128196; Fabrication Docs</a>
+                <a class="file-link" href="projects/MCUSTM32BT/MCUSTM32BT-schematic.pdf" target="_blank" rel="noopener noreferrer">&#128196; Schematic (.pdf)</a>
+                <a class="file-link" href="projects/MCUSTM32BT/MCUSTM32BT-fabrication.pdf" target="_blank" rel="noopener noreferrer">&#128196; Fabrication Docs</a>
                 <a class="file-link placeholder" href="#">&#128279; GitHub Repo</a>
               </div>
             </div>
+          </div>
           </div>
         </div>
       </div>
@@ -691,13 +716,13 @@
         </a>
       </div>
       <div class="contact-item">
-        <a href="https://github.com/ndarien08" target="_blank" rel="noopener">
+        <a href="https://github.com/ndarien08" target="_blank" rel="noopener noreferrer">
           <div class="contact-label">GitHub</div>
           <div class="contact-value">github.com/ndarien08</div>
         </a>
       </div>
       <div class="contact-item">
-        <a href="https://www.linkedin.com/in/dar2608" target="_blank" rel="noopener">
+        <a href="https://www.linkedin.com/in/dar2608" target="_blank" rel="noopener noreferrer">
           <div class="contact-label">LinkedIn</div>
           <div class="contact-value">linkedin.com/in/dar2608</div>
         </a>
@@ -747,16 +772,34 @@
       img.addEventListener('click', () => openLightbox(img.src, img.alt));
     });
 
+    const burger = document.getElementById('navBurger');
+    const navLinks = document.getElementById('navLinks');
+    burger.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open);
+    });
+    navLinks.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => { navLinks.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); });
+    });
+
     const toggle = document.getElementById('themeToggle');
     const icon = document.getElementById('themeIcon');
     const label = document.getElementById('themeLabel');
-    let light = false;
+
+    function applyTheme(isLight) {
+      document.documentElement.classList.toggle('light', isLight);
+      icon.textContent = isLight ? '☽' : '☀';
+      label.textContent = isLight ? 'Night' : 'Day';
+    }
+
+    const saved = localStorage.getItem('theme');
+    let light = saved ? saved === 'light' : window.matchMedia('(prefers-color-scheme: light)').matches;
+    applyTheme(light);
 
     toggle.addEventListener('click', () => {
       light = !light;
-      document.documentElement.classList.toggle('light', light);
-      icon.textContent = light ? '☽' : '☀';
-      label.textContent = light ? 'Night' : 'Day';
+      applyTheme(light);
+      localStorage.setItem('theme', light ? 'light' : 'dark');
     });
   </script>
 
