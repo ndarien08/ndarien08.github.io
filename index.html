@@ -295,6 +295,36 @@
     }
     .file-link.placeholder::after { content: ' — coming soon'; font-size: 10px; }
 
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 0.5px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .service-card {
+      background: var(--surface);
+      padding: 1.75rem;
+      display: flex; flex-direction: column; gap: 1.1rem;
+      transition: background 0.2s;
+    }
+    .service-card:hover { background: var(--accent-glow); }
+    .service-card-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+    }
+    .service-title { font-size: 1.05rem; font-weight: 400; }
+    .service-price {
+      font-family: var(--mono); font-size: 1.2rem; color: var(--accent);
+      white-space: nowrap;
+    }
+    .service-price span { font-size: 0.65rem; color: var(--muted); margin-left: 2px; }
+    .service-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; }
+    .service-cta { align-self: flex-start; }
+
     /* CONTACT */
     .contact-grid {
       display: grid;
@@ -407,6 +437,7 @@
       <a href="#skills">Skills</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
+      <a href="#services">Services</a>
       <a href="#contact">Contact</a>
     </div>
     <button class="nav-burger" id="navBurger" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
@@ -426,7 +457,7 @@
     </p>
     <div class="hero-cta">
       <a href="https://github.com/ndarien08" class="btn btn-primary">GitHub</a>
-      <a href="docs/resume/CV_Darien_Rosario_Pimentel_08_26_B_en.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
+      <a href="docs/resume/CV_Darien_Rosario_Pimentel.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-outline">Resume</a>
       <a href="#contact" class="btn btn-outline">Get in touch</a>
     </div>
   </div>
@@ -704,6 +735,23 @@
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <section id="services" class="reveal">
+    <div class="section-label">Services</div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-card-header">
+          <h3 class="service-title">PCB Design</h3>
+          <div class="service-price">$50<span>/hr</span></div>
+        </div>
+        <p class="service-desc">
+          Custom PCB design and commissions for boards up to 6 layers — schematic capture,
+          layout, and manufacturing-ready output.
+        </p>
+        <a href="#contact" class="btn btn-primary service-cta">Get in touch</a>
+      </div>
     </div>
   </section>
 
