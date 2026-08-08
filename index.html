@@ -184,6 +184,12 @@
       font-size: 12px; color: var(--accent); margin-bottom: 0.8rem;
     }
     .exp-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; max-width: 580px; }
+    .exp-desc p { margin-bottom: 0.6rem; }
+    .exp-desc ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .exp-desc li { position: relative; padding-left: 1.1rem; }
+    .exp-desc li::before {
+      content: '—'; position: absolute; left: 0; color: var(--accent);
+    }
     .exp-date {
       font-family: var(--mono);
       font-size: 11px; color: var(--muted);
@@ -544,14 +550,16 @@
         <div>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.3rem;">
             <img src="logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85;">
-            <div class="exp-title" style="margin-bottom:0;">Research Assistant - Dominican Republic Isokeraunic Map Project</div>
+            <div class="exp-title" style="margin-bottom:0;">Research Assistant — Dominican Republic Isokeraunic Map Project</div>
           </div>
           <div class="exp-org">Universidad APEC</div>
           <div class="exp-desc">
-            In charge of developing electronic subsystems for the national project to map isokeraunic lightning strikes.
-            - Designed schematics and PCBs (1 and 2-layer) for lightning detection subsystems.
-            - Performed circuit simulations in LTspice and developed power supplies for the detection systems.
-            - Contributed to the country’s first nationwide isoceratic mapping.
+            <p>In charge of developing electronic subsystems for the national project to map isokeraunic lightning strikes.</p>
+            <ul>
+              <li>Designed schematics and PCBs (1 and 2-layer) for lightning detection subsystems.</li>
+              <li>Performed circuit simulations in LTspice and developed power supplies for the detection systems.</li>
+              <li>Contributed to the country's first nationwide isokeraunic mapping.</li>
+            </ul>
           </div>
         </div>
         <div class="exp-date">Jun 2024 – Sep 2025</div>
@@ -560,13 +568,15 @@
         <div>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:0.3rem;">
             <img src="logos/UNAPEC/UNAPECLOGO.png" alt="UNAPEC" style="height:28px; width:auto; opacity:0.85;">
-            <div class="exp-title" style="margin-bottom:0;">Research Associate - CubeSat Testing Laboratory</div>
+            <div class="exp-title" style="margin-bottom:0;">Research Associate — CubeSat Testing Laboratory</div>
           </div>
           <div class="exp-org">Universidad APEC</div>
           <div class="exp-desc">
-            In charge for the design and development of validation equipment for CubeSat systems, including vibration testing, magnetic characterization, and attitude control.
-            - Designed PCBs and power regulation/distribution circuits for CubeSat validation subsystems.
-            - Developed test equipment for vibration, magnetic characterization, and attitude control systems.
+            <p>In charge of the design and development of validation equipment for CubeSat systems, including vibration testing, magnetic characterization, and attitude control.</p>
+            <ul>
+              <li>Designed PCBs and power regulation/distribution circuits for CubeSat validation subsystems.</li>
+              <li>Developed test equipment for vibration, magnetic characterization, and attitude control systems.</li>
+            </ul>
           </div>
         </div>
         <div class="exp-date">Oct 2023 – Aug 2024</div>
